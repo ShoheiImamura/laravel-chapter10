@@ -86,10 +86,22 @@ Log::info('User failed to login.', ['id' => $user->id]);
   - `/etc/rsyslog.conf` に設定内容を記述する
   - ログ出力先を任意のディレクトリや別サーバに設定できる
 
+### Log 関連のクラス概観
 
+- クラス名のみ
+![](https://github.com/ShoheiImamura/laravel-chapter10/blob/master/.documents/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3_%E3%82%B7%E3%83%B3%E3%83%97%E3%83%AB.png?raw=true)
 
+- クラス名 + メソッド名
+![](https://github.com/ShoheiImamura/laravel-chapter10/blob/master/.documents/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3_%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E8%A1%A8%E7%A4%BA.png?raw=true)
 
+- laravel5.5 でWebhookHandlerを追加する場合
+![](https://github.com/ShoheiImamura/laravel-chapter10/blob/master/.documents/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3_SlackWebhook%E8%BF%BD%E5%8A%A0.png?raw=true)
 
+- 権限に酔ってアプリケーションログを分離する場合
+![](https://github.com/ShoheiImamura/laravel-chapter10/blob/master/.documents/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3_%E3%82%A2%E3%83%97%E3%83%AA%E3%82%B1%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%AD%E3%82%B0%E5%88%86%E9%9B%A2.png?raw=true)
+
+- Elastic ドライバを追加する場合
+![](https://github.com/ShoheiImamura/laravel-chapter10/blob/master/.documents/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3_ElasticaDriver%E8%BF%BD%E5%8A%A0.png?raw=true)
 
 
 

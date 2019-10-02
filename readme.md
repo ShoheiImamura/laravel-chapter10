@@ -103,6 +103,16 @@ Log::info('User failed to login.', ['id' => $user->id]);
 - Elastic ドライバを追加する場合
 ![](https://github.com/ShoheiImamura/laravel-chapter10/blob/master/.documents/%E3%82%AF%E3%83%A9%E3%82%B9%E5%9B%B3_ElasticaDriver%E8%BF%BD%E5%8A%A0.png?raw=true)
 
+### slackハンドラ
+
+- 5.6 以降では、設定ファイル(`config/logging.php`)を更新するだけで利用できる
+- 5.5 以前では、「Slack へ通知を行うハンドラ」をロガーに追加する必要がある
+  - 実装例： [/app/Providers/LogServiceProvider.php](https://github.com/ShoheiImamura/laravel-chapter10/blob/master/app/Providers/LogServiceProvider.php#L16-L34)
+  - slack 設定ファイル：[/config/slack.php](https://github.com/ShoheiImamura/laravel-chapter10/blob/master/config/slack.php)
+  - サービスプロバイダ登録：
+
+
+
 
 
 ## 対応表
@@ -120,7 +130,7 @@ Log::info('User failed to login.', ['id' => $user->id]);
  - [リスト10.2.6.1：createElasticaDriverメソッド実装例](app/Foundation/Logger/Writer.php)
  - [リスト10.2.6.3：LogServiceProviderクラスの拡張](app/Providers/ExtendLogServiceProvider.php)
  - [リスト10.2.6.4：アクセスログをControllerクラスからelasticsearchに送信する](app/Http/Controllers/IndexAction.php)
- 
+
 ## For Docker
 
 ### setup 

@@ -109,11 +109,100 @@ Log::info('User failed to login.', ['id' => $user->id]);
 - 5.5 以前では、「Slack へ通知を行うハンドラ」をロガーに追加する必要がある
   - 実装例： [/app/Providers/LogServiceProvider.php](https://github.com/ShoheiImamura/laravel-chapter10/blob/master/app/Providers/LogServiceProvider.php#L16-L34)
   - slack 設定ファイル：[/config/slack.php](https://github.com/ShoheiImamura/laravel-chapter10/blob/master/config/slack.php)
-  - サービスプロバイダ登録：
+  - サービスプロバイダ登録：[/config/app.php](https://github.com/ShoheiImamura/laravel-chapter10/blob/master/config/app.php#L174-L185)
 
+### Webアプリケーションとコンソールアプリケーション
 
+- Webアプリケーションのログとコンソールアプリケーションのログは分離して出力する
+  - 実行ユーザが異なることによる権限エラーを防ぐため
 
+- Laravel インスタンス（ `$this->app()` ） の `runnningInConsole()` メソッドを用いて、どちらで実行されているかを判定できる
+  - [リスト10.2.3.1：コンソールアプリケーションのログを分離する](app/Providers/AppServiceProvider.php)
+  - [リスト10.2.3.2：アプリケーションログ分離例](app/Providers/ExtendLogServiceProvider.php)
 
+- `config/logging.php` の設定を変更してログの出力ディレクトリの分離ができる
+
+```php
+'channels' => [
+    // 省略
+    'single' => [
+        'driver' => 'single',
+        // コンソールの場合：/log/console.log
+        // Webアプリの場合： /log/laravel.log
+        'path' => app()->runningInConsole() ?
+            storage_path('logs/console.log') : storage_path('logs/laravel.log'),
+        'level' => 'debug',
+    ]
+],
+```
+
+### ヘルパー関数の登録方法
+
+1. 処理を記述したファイルを作成する
+2. composer.json の "autoload" の "file" に上記で作成したファイルパスを追記する
+3. `composer dump-autoload` コマンドを実行する
+
+### カスタムログドライバの追加方法
+
+#### laravel 5.6 の場合
+
+```php
+// laravel 5.6 以降は、利用時にドライバを指定できる
+// driver メソッドを利用
+$this->logger->('elastica')->info()...;
+
+// logs ヘルパ関数を利用
+log('elastica')->info()...;
+
+// Log ファサードを利用
+\Log::channel('elastica')->info()...;
+```
+
+- ログドライバを追加する（デフォルトで指定できない場合）
+  - LogManager を継承したクラスに実装
+  - メソッド名は「create + ドライバ名 + Driver」
+  - メソッドの戻り値はログハンドラを利用するクラスのインスタンス
+  - 作成したクラスは、ServiceProviderに登録
+- ログドライバを指定可能にする
+  - LogManager クラスの extend メソッドを利用
+- ログドライバ設定を行う
+  - config/logging.php に記述
+  - driver, level, formatter, formatter_with を指定
+- カスタムログドライバを指定して利用する
+  - インスタンスの driver メソッドを利用
+  - logsヘルパー関数
+  - Log ファサード
+
+#### laravel 5.5 の場合
+
+```php
+// 利用時にドライバを指定できない
+// driver メソッドを利用
+$this->logger->info()->...;
+
+// logger ヘルパ関数を利用
+logger()->info()...;
+
+// Log ファサードを利用
+\Log::info()->...;
+```
+
+- ログドライバを追加する
+  - Writer を継承したクラスに実装
+- ログドライバ設定を行う
+  - config/app.php に記述
+  - ドライバ名を指定
+- log サービスの登録内容を上書きする
+  - LogServiceProvider を継承したクラスに実装
+  - createLogger() メソッドを上書き
+  - Writer を拡張したクラスを利用する
+- ログドライバを指定可能にする
+  - LogServiceProvider を継承したクラスに実装
+  - configureXxxHandler メソッドの引数に Writer を拡張したクラス
+- カスタムログドライバを利用する
+  - インスタンスの driver メソッドを利用
+  - loggerヘルパー関数
+  - Log ファサード
 
 ## 対応表
 

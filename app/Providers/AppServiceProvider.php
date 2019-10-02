@@ -34,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
 
+        // コンソールアプリケーション実行時のみ以下の処理を行う
         if ($this->app->runningInConsole()) {
             $this->app->singleton('log', function (Application $app) {
 

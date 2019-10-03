@@ -13,10 +13,10 @@ Laravel 5.5 と 5.6 では処理が変わる点があるので注意
 
 ### ログドライバとログハンドラ
 
-| 用語         | 説明                               |
-|--------------|------------------------------------|
-| ログハンドラ | ログをどのように扱うかをきめる処理 |
-| ログドライバ | ログハンドラに対応する名前？       |
+| 用語         | 説明                                  |
+|--------------|---------------------------------------|
+| ログハンドラ | Monolog (外部ライブラリ) の世界の概念 |
+| ログドライバ | Laravel の世界の概念                  |
 
 ### ログの利用用途
 
@@ -48,6 +48,24 @@ Log::info('User failed to login.', ['id' => $user->id]);
 // 上記から出力されるログ
 [2019-10-03 06:28:35] local.INFO : User failed to login. {'id': 100}
 ```
+
+### ログレベル
+
+- PSR-3 に準拠している
+- [vendor\psr\log\Psr\Log\LoggerInterface.php](vendor\psr\log\Psr\Log\LoggerInterface.php)
+  - [https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md)
+
+
+| ログレベル  | 説明                                                                                                                                                                            | 例                                                                                                                                                                                              |
+|:------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `emergency` | `System is unusable.`<br>システムが使用不可能な状態                                                                                                                             | -                                                                                                                                                                                               |
+| `alert`     | `Action must be taken immediately.`<br>直ちになんらかの対処の必要がある                                                                                                         | `Entire website down, database unavailable, etc. This should trigger the SMS alerts and wake you up.`<br>完全にWebsiteがダウンした、データベースが使用不可能など。SMSで通知して起きる必要がある |
+| `critical`  | `Critical conditions.`<br>危機的な状態                                                                                                                                          | `Application component unavailable, unexpected exception.`<br>アプリケーションコンポーネントが使用不可能、予期しない例外。|-                                                                    |
+| `error`     | `Runtime errors that do not require immediate action but should typically be logged and monitored.`<br>直ちに対処する必要のない実行時エラーだが、通常はログに記録して監視すべき | -                                                                                                                                                                                               |
+| `warning`   | `Exceptional occurrences that are not errors.`<br>エラーではない例外的な出来事                                                                                                  | `Use of deprecated APIs, poor use of an API, undesirable things that are not necessarily wrong.`廃止予定のAPI、中途半端なAPI、必ずしも間違っていないが望ましくないものの使用                    |
+| `notice`    | `Normal but significant events.`正常だが、重要な事象                                                                                                                            | -                                                                                                                                                                                               |
+| `info`      | `Interesting events.`<br>興味深い事象                                                                                                                                           | `User logs in, SQL logs.`<br>ユーザーのログインやSQLログ                                                                                                                                        |
+| `debug`     | `Detailed debug information.`<br>詳細なデバッグ情報                                                                                                                             | -                                                                                                                                                                                               |
 
 ### ログの出力設定
 
